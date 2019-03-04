@@ -1,0 +1,31 @@
+
+1.  Are maxLength, or minLength allowed on optional name/value pairs?
+      -YES
+
+2.  Based on the basics from Chapter 40 JSON has Number, Boolean, Null, String,
+    Object, and Array as object types. Research whether they all apply as types
+    in JSON-schema. Make an example that proves your answer.
+
+      The valid schema types are:
+      - string
+      - number, integer
+      - integer
+      - boolean
+      - null
+      - array
+      - object
+
+      Enum:
+      {
+        "type": "string",
+        "enum": ["red", "amber", "green"]
+      }
+
+      Constant:
+      {
+        "properties": {
+          "country": {
+            "const": "United States of America"
+          }
+        }
+      }

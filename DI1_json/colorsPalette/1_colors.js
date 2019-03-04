@@ -2,7 +2,7 @@
 let getJSONFile = function(e) {
     let ajax = Object.create(Ajax);
     ajax.init();
-    ajax.getFile('1_colorsin.json');
+    ajax.getFile('1_colorsIn.json');
     console.log(ajax);
 }
 

@@ -14,14 +14,11 @@
     getFile(filename) {
         try {
             this.ajaxobj.addEventListener('load', function(ev) {
-                        if (ev.target.readyState === 4) {
-                            if (ev.target.status === 200) {
-                                // it was a load event, ie successful return from server
-                                this.respObj = ev.target.responseText;
-                                callBack(this.respObj);
-                            }
-                        }
-                    });
+
+              // it was a load event, ie successful return from server
+              this.respObj = ev.target.responseText;
+              callBack(this.respObj);
+            });
             this.ajaxobj.open("GET", filename);
             this.ajaxobj.send("");
         } catch(err) {

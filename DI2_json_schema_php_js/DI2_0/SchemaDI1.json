@@ -1,0 +1,98 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "colors"
+  ],
+  "properties": {
+    "colors": {
+      "$id": "#/properties/colors",
+      "type": "array",
+      "title": "The Colors Schema",
+      "items": {
+        "$id": "#/properties/colors/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "color",
+          "category",
+          "type",
+          "code"
+        ],
+        "properties": {
+          "color": {
+            "$id": "#/properties/colors/items/properties/color",
+            "type": "string",
+            "title": "The Color Schema",
+            "default": "",
+            "examples": [
+              "black"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "category": {
+            "$id": "#/properties/colors/items/properties/category",
+            "type": "string",
+            "title": "The Category Schema",
+            "default": "",
+            "examples": [
+              "hue"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "type": {
+            "$id": "#/properties/colors/items/properties/type",
+            "type": "string",
+            "title": "The Type Schema",
+            "default": "",
+            "examples": [
+              "primary"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "code": {
+            "$id": "#/properties/colors/items/properties/code",
+            "type": "object",
+            "title": "The Code Schema",
+            "required": [
+              "rgba",
+              "hex"
+            ],
+            "properties": {
+              "rgba": {
+                "$id": "#/properties/colors/items/properties/code/properties/rgba",
+                "type": "array",
+                "title": "The Rgba Schema",
+                "items": {
+                  "$id": "#/properties/colors/items/properties/code/properties/rgba/items",
+                  "type": "integer",
+                  "title": "The Items Schema",
+                  "default": 0,
+                  "examples": [
+                    255,
+                    255,
+                    255,
+                    1
+                  ]
+                }
+              },
+              "hex": {
+                "$id": "#/properties/colors/items/properties/code/properties/hex",
+                "type": "string",
+                "title": "The Hex Schema",
+                "default": "",
+                "examples": [
+                  "#000"
+                ],
+                "pattern": "^(.*)$"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

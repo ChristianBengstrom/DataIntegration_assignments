@@ -1,0 +1,177 @@
+Assignment DI.1.2
+
+Consider the following:
+
+Example B.113. The Languages of the World
+JSON source may be downloaded from: https://gitlab.com/arosano/worldlanguages.git . The listing hereunder is a fragment prettified for easy reading.
+
+[
+    {"speakers":"5459","language":"Dutch","countrycode":"ABW"},
+    {"speakers":"9785","language":"English","countrycode":"ABW"},
+    {"speakers":"79001","language":"Papiamento","countrycode":"ABW"},
+    {"speakers":"7622","language":"Spanish","countrycode":"ABW"},
+    {"speakers":"204480","language":"Balochi","countrycode":"AFG"},
+    ...
+]
+
+The JSON file holds 987 objects of countrylanguage information. Your assignment is to calculate how many speaks each language in the world. When that is done, you must print them on an HTML5 page, numbered, forty (40) at a time, such that the user may click his way to viewing the following forty.
+
+The objects you create in JavaScript to represent the countrylanguage combinations must use the OLOO object pattern outlined in the previous JavaScript course.
+
+Example Solution Assignment DI.1.0
+
+Example B.114. Ajax.js
+'use strict';
+/*
+ * use of getFile
+ * requires 'callBack(x)' to be defined in app.
+ */
+let Ajax = {
+    init() {
+        this.respObj = null;
+        this.ajaxobj = false;
+        try {
+            this.ajaxobj = new XMLHttpRequest();
+        } catch(err) {
+            window.alert(err.message + " Get yourself a browser ;)");
+        }
+    },
+
+    getFile(filename) {
+        try {
+            this.ajaxobj.addEventListener('load', function(ev) {
+                        if (ev.target.readyState === 4) {
+                            if (ev.target.status === 200) {
+                                // it was a load event, ie successful return from server
+                                this.respObj = ev.target.responseText;
+                                callBack(this.respObj);
+                            }
+                        }
+                    });
+            this.ajaxobj.open("GET", filename);
+            this.ajaxobj.send("");
+        } catch(err) {
+            alert(err.message + 'WTF');
+        }
+    }
+}
+
+Example B.115. json10.js
+'use strict';
+
+var callBack = function(txt) {
+    let ll = {
+        init(lang, spk) {
+            this.lang = lang;
+            this.spk = Number(spk);
+        }
+    };
+
+    let myJson = JSON.parse(txt);
+    let lang;
+    let arr = [];
+    for (lang of myJson) {
+        let found = false;
+        let i;
+        let lobj = Object.create(ll);
+        lobj.init(lang.language, lang.speakers);
+        for (i = 0; i < arr.length; i++) {
+            if (lobj.lang === arr[i].lang) {
+                arr[i].spk += lobj.spk;
+                found = true;
+            }
+        }
+        if (!found) {
+            arr[i] = lobj;
+        }
+    }
+
+    // sort by number of speakers
+    arr.sort(function (a, b) {
+        return b.spk - a.spk;
+    });
+
+    let start = 0;
+    let pageHeight = 20;
+
+    display(arr, start, pageHeight);
+
+    $('btn2').addEventListener('click', function x() {
+        clear();
+        start += pageHeight;
+        display(arr, start, pageHeight);
+    });
+    $('btn1').addEventListener('auxclick', function y() {
+        clear();
+        start -= pageHeight;
+        display(arr, start, pageHeight);
+    });
+}
+
+let clear = function () {
+    while ($('dt').firstChild) {        // Removing all children from an element
+        $('dt').removeChild($('dt').firstChild);
+    }
+}
+
+let display = function(arr, start, numRows) {
+    let tbl = document.createElement('table');
+    let i;
+    if (arr.length - start < numRows) {
+        start = arr.length - numRows;
+    }
+    if (start < 0) {
+        start = 0;
+    }
+    for (i = start; i < start+numRows; i++) {
+        let rw = document.createElement('tr');
+        let td = document.createElement('td');
+        td.setAttribute('style', 'text-align: right; width: 2em;');
+        let num = document.createTextNode(Number(i+1));
+        td.appendChild(num);
+        rw.appendChild(td);
+
+        td = document.createElement('td');
+        let txt = document.createTextNode(arr[i].lang);
+        td.appendChild(txt);
+        rw.appendChild(td);
+
+        td = document.createElement('td');
+        td.setAttribute('style', 'text-align: right;');
+        num = document.createTextNode(Number(arr[i].spk).toLocaleString());
+        td.appendChild(num);
+        rw.appendChild(td);
+        tbl.appendChild(rw);
+    }
+    $('dt').appendChild(tbl);
+}
+
+let getJSONFile = function(e) {
+    let ajax = Object.create(Ajax);
+    ajax.init();
+    ajax.getFile('../DIAss/languages.json');
+}
+
+window.addEventListener('load', getJSONFile);
+
+Example B.116. json10.html
+<!doctype html>
+<html>
+    <head>
+        <title>NMLs JSON.1.2 - Languages of the Worlds</title>
+        <meta charset='utf-8'/>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <link rel='stylesheet' href='json11.css'/>
+        <script src='nQuery.js'></script>
+        <script src='Ajax.js'></script>
+        <script src='json12.js'></script>
+    </head>
+    <body>
+        <h1>Languages of the Worlds</h1>
+        <section id='dt'></section>
+        <section>
+            <button id='btn1'>&lt;</button>&nbsp;&nbsp;<button id='btn2'>&gt;</button>
+        </section>
+    </body>
+</html>
+Check it!
